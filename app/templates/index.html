@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+
+{% block content %}
+
+<div class="container py-5">
+    <!-- Welcome Section -->
+    <div class="text-center mb-4">
+        <h1 class="display-4">Welcome to dVoting, {{ user.username }}!</h1>
+        <p class="lead text-muted">Your secure and efficient voting platform.</p>
+    </div>
+
+    <!-- Navigation Section -->
+    <div class="row text-center mb-4">
+        <div class="col-md-4 mb-3">
+            <!--Vote Section-->
+            <a href="" class="btn btn-primary btn-lg w-100">
+                <i class="fas fa-vote-yea"></i> Vote Now
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <!--Vote History Section-->
+            <a href="" class="btn btn-secondary btn-lg w-100">
+                <i class="fas fa-history"></i> View Voting History
+            </a>
+        </div>
+        <div class="col-md-4 mb-3">
+            <!--Profile Section-->
+            <a href="{% url 'profile' %}" class="btn btn-info btn-lg w-100 text-light">
+                <i class="fas fa-user"></i> My Profile
+            </a>
+        </div>
+    </div>
+
+    <!-- Active Voting Sessions -->
+    <div class="card mb-4">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Active Voting Sessions</h4>
+        </div>
+        <div class="card-body">
+            {% if active_votes %}
+                <ul class="list-group">
+                    {% for vote in active_votes %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ vote.title }}
+                            <!--vote_detail' vote.id-->
+                            <a href="" class="btn btn-sm btn-primary">Participate</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">No active voting sessions available at the moment.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- General Information -->
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Your Voting History</h5>
+                    <p class="card-text">View a summary of your past votes and contributions.</p>
+                    <!--vote_history-->
+                    <a href="" class="btn btn-secondary">View History</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Edit Your Profile</h5>
+                    <p class="card-text">Keep your profile up-to-date with the latest information.</p>
+                    <!--'edit_profile'-->
+                    <a href="" class="btn btn-info text-light">Edit Profile</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Logout</h5>
+                    <p class="card-text">End your current session.</p>
+                    <a href="{% url 'logout' %}" class="btn btn-danger text-light">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

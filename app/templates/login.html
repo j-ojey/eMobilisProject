@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
+    <div class="card shadow-lg p-4" style="width: 350px; background: linear-gradient(to right, #dff6f0, #f6dff0); border-radius: 15px;">
+        <h3 class="text-center fw-bold mb-2">Log In</h3>
+        <p class="text-center text-muted mb-4">Login here using your username and password</p>
+
+
+        {% if error %}
+            <div class="alert alert-danger">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <button class="btn btn-dark w-100 mb-3" type="submit">Log In</button>
+        </form>
+
+        <div class="text-center">
+            <!--<a href="#" class="text-muted d-block mb-2">Forgot Password?</a>-->
+            <p class="mb-0">Don't have an account?
+            <a href="{% url 'register' %}" class="btn btn-info btn-sm text-light">Sign Up <i class="fas fa-user-plus"></i></a>
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

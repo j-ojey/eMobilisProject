@@ -18,12 +18,25 @@ from django.contrib import admin
 from django.urls import path
 
 from app import views
+from app.views import delete_election
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.index, name='index'),
     path('login/', views.custom_login, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('index/', views.index, name='index'),
+    path('admin_dashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('create_election/', views.create_election, name='create_election'),
+    path('edit_election/<int:election_id>/', views.edit_election, name='edit_election'),
+    path('delete_election/<int:election_id>/', delete_election, name='delete_election'),
+    path('add_candidates/<int:election_id>/', views.add_candidates, name='add_candidates'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     path('register/', views.register, name='register'),
     path('profile/', views.profile_view, name='profile'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('vote/<int:election_id>/', views.vote_view, name='vote_form'),
+    path('vote/', views.vote_dashboard, name='vote'),
+    path('voting_history/', views.voting_history, name='voting_history'),
 ]
+
+

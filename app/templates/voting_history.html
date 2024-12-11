@@ -1,0 +1,15 @@
+<!-- voting_history.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Your Voting History</h1>
+  {% if votes %}
+    <ul>
+      {% for vote in votes %}
+        <li>{{ vote.timestamp }} - Voted in {{ vote.election.name }} for {{ vote.choice }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>You haven't voted yet.</p>
+  {% endif %}
+{% endblock %}

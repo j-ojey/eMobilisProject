@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Vote for {{ election.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Vote for {{ election.name }}</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row">
+            {% for position in election.elected_positions.all %}
+                <div class="col-md-6 mb-4">
+                    <h5>{{ position }}</h5>
+                    <div class="form-group">
+                        <label for="candidate_{{ position }}">Select Candidate</label>
+                        <select class="form-control" name="candidate_{{ position }}" id="candidate_{{ position }}">
+                            {% for candidate in candidates %}
+                                {% if candidate.position == position %}
+                                    <option value="{{ candidate.id }}">{{ candidate.name }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Vote</button>
+    </form>
+</div>
+{% endblock %}

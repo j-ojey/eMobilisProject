@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Election{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-primary mb-4">Edit Election</h1>
+    <div class="card shadow-lg p-4" style="background-color: #f8f9fa; border-radius: 10px;">
+        {% if election %}
+        <!-- Update Election Form -->
+        <form method="POST" action="{% url 'edit_election' election.id %}" name="election_form">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label for="name" class="form-label text-dark">Election Name</label>
+                <input type="text" id="name" name="name" value="{{ election.name }}" class="form-control border-primary" required>
+            </div>
+            <div class="form-group mb-3">
+                <label for="description" class="form-label text-dark">Description</label>
+                <textarea id="description" name="description" class="form-control border-primary" rows="3" required>{{ election.description }}</textarea>
+            </div>
+            <div class="form-group mb-3">
+                <label for="status" class="form-label text-dark">Status</label>
+                <select id="status" name="status" class="form-select border-primary">
+                    <option value="open" {% if election.status == "open" %}selected{% endif %}>Open</option>
+                    <option value="closed" {% if election.status == "closed" %}selected{% endif %}>Closed</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Election</button>
+        </form>
+
+        <!-- Add Candidates Form -->
+        <div class="form-group mb-4 mt-4">
+            <label class="form-label">Add Candidates</label>
+            <form method="POST" action="{% url 'edit_election' election.id %}" name="candidate_form">
+                {% csrf_token %}
+                <div class="row g-2">
+                    <div class="col-md-5">
+                        <input type="text" name="name" class="form-control" placeholder="Candidate Name" required>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="text" name="position" class="form-control" placeholder="Position" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary w-100">Add Candidate</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Display Current Candidates -->
+        <div class="mt-4">
+            <h3 class="text-success">Current Candidates</h3>
+            <ul class="list-group">
+                {% for candidate in candidates %}
+                    <li class="list-group-item">
+                        {{ candidate.name }} - {{ candidate.position }}
+                    </li>
+                {% empty %}
+                    <p>No candidates available for this election.</p>
+                {% endfor %}
+            </ul>
+        </div>
+
+        {% else %}
+        <p class="text-danger">No election data available for editing. Please try again.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

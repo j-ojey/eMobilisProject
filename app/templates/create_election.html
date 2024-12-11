@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Election{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Hero Section with Gradient Background -->
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <div class="hero-section p-5 mb-4 rounded shadow-lg" style="background: linear-gradient(135deg, #6f42c1, #4e73df);">
+                <h1 class="text-white display-4 font-weight-bold mb-3">Create New Election</h1>
+                <p class="text-light lead">Fill in the election details, add positions, and nominate candidates. It's quick and easy!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Election Form -->
+    <form method="POST" action="{% url 'create_election' %}" class="bg-white p-4 rounded shadow-sm">
+        {% csrf_token %}
+
+        <!-- Election Name & Description -->
+        <div class="mb-4">
+            <h3 class="text-primary text-center mb-4">Election Details</h3>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="name" class="form-label">Election Name</label>
+                    <input type="text" name="name" id="name" class="form-control form-control-lg" placeholder="Enter the name of the election" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea name="description" id="description" class="form-control form-control-lg" rows="3" placeholder="Describe the election" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status & Purpose -->
+        <div class="mb-4">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label for="status" class="form-label">Status</label>
+                    <select name="status" id="status" class="form-select form-select-lg">
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="election_for" class="form-label">What is this election for?</label>
+                    <input type="text" name="election_for" id="election_for" class="form-control form-control-lg" placeholder="Purpose of the election" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Positions and Candidates Section -->
+        <div id="positions-container" class="mb-4">
+            <div class="card p-4 mb-3 border-light shadow-sm" id="position-0">
+                <h4 class="text-center text-primary mb-3">Position 1</h4>
+                <div class="form-group mb-3">
+                    <label for="position_name_0" class="form-label">Position Name</label>
+                    <input type="text" name="position_name_0" class="form-control form-control-lg" placeholder="Enter position name" required>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="candidates_0" class="form-label">Candidates (up to 3)</label>
+                    <textarea name="candidates_0" class="form-control form-control-lg" placeholder="Enter candidate names separated by commas" required></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Field for Position Count -->
+        <input type="hidden" name="position_count" id="position_count" value="1">
+
+        <!-- Add Another Position Button -->
+        <div class="text-center mb-4">
+            <button type="button" class="btn btn-outline-primary btn-lg" id="add-position">
+                <i class="bi bi-plus-circle"></i> Add Another Position
+            </button>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+            <a href="{% url 'admin_dashboard' %}"><button type="submit" class="btn btn-success btn-lg px-5 py-3">Create Election</button></a>
+        </div>
+    </form>
+</div>
+
+<!-- Script for Dynamic Position Addition -->
+<script>
+    let positionCount = 1;  // Keep track of the number of positions
+    document.getElementById('add-position').addEventListener('click', function() {
+        const container = document.getElementById('positions-container');
+
+        // Clone the first position form
+        const newPosition = document.getElementById('position-0').cloneNode(true);
+        newPosition.id = `position-${positionCount}`;
+
+        // Update the position name and candidate input fields dynamically
+        newPosition.querySelector('h4').innerText = `Position ${positionCount + 1}`;
+        newPosition.querySelector('input[name="position_name_0"]').setAttribute('name', `position_name_${positionCount}`);
+        newPosition.querySelector('textarea[name="candidates_0"]').setAttribute('name', `candidates_${positionCount}`);
+
+        container.appendChild(newPosition);
+
+        // Increment the position count
+        positionCount++;
+        document.getElementById('position_count').value = positionCount;
+    });
+</script>
+
+{% endblock %}

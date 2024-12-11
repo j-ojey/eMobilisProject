@@ -2,32 +2,142 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
-<div class="d-flex justify-content-center align-items-center vh-100 bg-dark">
-    <div class="card shadow-lg p-4" style="width: 400px; background: linear-gradient(to right, #dff6f0, #f6dff0); border-radius: 15px;">
-        <h3 class="text-center fw-bold mb-2">Register to dVoting</h3>
-        <p class="text-center text-muted mb-4">Create your account to access the system</p>
+<style>
+    .vh-100 {
+        background: linear-gradient(to bottom, #dff6f0, #f6dff0);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        transition: background 0.5s ease-in-out;
+    }
+
+    .card {
+        width: 100%;
+        max-width: 400px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease;
+        padding: 2rem;
+    }
+
+    .card h3 {
+        font-size: 1.8rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .card p {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-bottom: 2rem;
+    }
+
+    .form-control, .form-control.password, .form-control.username, .form-control.email {
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+        background-color: #f7f7f7;
+    }
+
+    .btn {
+        transition: all 0.3s ease-in-out;
+        border-radius: 10px;
+        padding: 10px;
+        font-weight: bold;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-dark {
+        background-color: #343a40;
+        border-color: #343a40;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+    }
+
+    .alert {
+        animation: shake 0.5s ease;
+        margin-bottom: 1.5rem;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes shake {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        20%, 60% {
+            transform: translateX(-10px);
+        }
+        40%, 80% {
+            transform: translateX(10px);
+        }
+    }
+</style>
+
+<div class="vh-100">
+    <div class="card">
+        <h3 class="text-center fw-bold">Register to dVoting</h3>
+        <p class="text-center text-muted">Create your account to access the system</p>
 
         {% if form.errors %}
-        <div class="alert alert-danger">
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <p>{{ error }}</p>
+            <div class="alert alert-danger">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        </div>
+            </div>
         {% endif %}
 
         <form action="" method="POST">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-dark w-100 mb-3" type="submit">REGISTER</button>
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">Username</label>
+                <input type="text" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" class="form-control username" value="{{ form.username.value|default:'' }}" />
+            </div>
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">Email</label>
+                <input type="email" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" class="form-control email" value="{{ form.email.value|default:'' }}" />
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">Password</label>
+                <input type="password" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" class="form-control password" value="{{ form.password1.value|default:'' }}" />
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                <input type="password" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" class="form-control password" value="{{ form.password2.value|default:'' }}" />
+            </div>
+
+            <button class="btn btn-dark w-100" type="submit">REGISTER</button>
         </form>
 
-        <div class="text-center">
-            <p class="mb-0">Have an account?
-                <a href="{% url 'login' %}" class="btn btn-info btn-sm text-light">Login <i class="fas fa-user-plus"></i></a>
+        <div class="text-center mt-4">
+            <p class="mb-0">Already have an account?
+                <a href="{% url 'login' %}" class="btn btn-info btn-sm text-light">Login <i class="fas fa-sign-in-alt"></i></a>
             </p>
         </div>
     </div>
 </div>
+
 {% endblock %}
